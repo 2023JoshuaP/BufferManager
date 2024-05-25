@@ -83,7 +83,7 @@ void BufferManager::obtenerUnaPagina(int numPagina)
 
         cout<<"Ingresando Página al BufferPoll dentro vector de Frames...."<<endl;
         this->bufferPool.agregarNuevaPaginaBufferPool(numFrameDePagina,numPagina);
-        this->bufferPool.mostrarFramePagina(numPagina);
+        this->bufferPool.mostrarFramePagina(numFrameDePagina);
 
     }
 
