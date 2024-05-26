@@ -26,3 +26,9 @@ void BufferPool::mostrarFramePagina(int numFrame)
     cout<<"-------------------------mostrarFramePagina()--------------------------"<<endl;
     this->vectorFramesBufferPool[numFrame].paginaEnFrame.mostrarContenidoDePagina();
 }
+
+void BufferPool::lecturaOescrituraPagina(int numPagina)
+{
+    cout<<"-------------------------lecturaOescrituraPagina()----------------------"<<endl;
+    this->vectorFramesBufferPool[numPagina-1].paginaEnFrame.leerOescribirEnPagina();
+}

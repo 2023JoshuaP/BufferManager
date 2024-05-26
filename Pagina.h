@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 using namespace std;
 
@@ -18,6 +19,7 @@ public:
     void recogerRegistros(int numPagina);
     void mostrarContenidoDePagina();
     bool verificarPaginaVacia();
+    void leerOescribirEnPagina();
 };
 
 #endif

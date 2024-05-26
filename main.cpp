@@ -47,33 +47,47 @@ void menu()
 
         switch (opcion)
         {
-        case 1:
-            menuBufferManager(bufferManagerPrincipal);
-            break;
-        case 2:       
-            cout << "Ingrese el numero de pagina que desea OBTENER (Modo Prueba 1 - 6): "<< endl;
-            cin >> numPagina;        
-            bufferManagerPrincipal.obtenerUnaPagina(numPagina);
-            break;
+            case 1:
+                menuBufferManager(bufferManagerPrincipal);
+                break;
+            case 2:       
+                cout << "Ingrese el numero de pagina que desea OBTENER (Modo Prueba 1 - 6): "<< endl;
+                cin >> numPagina;        
+                bufferManagerPrincipal.obtenerUnaPagina(numPagina);
+                break;
+            case 3:
+                bufferManagerPrincipal.mostrarPageTAble();
+                break;
+            case 4:
+                cout << "Ingrese el numero de la pagina a mostrale"<<endl;
+                cin >> numPagina;
+                numFrame=bufferManagerPrincipal.pageTable.getNumFrameDeUnaPagina(numPagina);
+            
+            
+                char accionEnPagina;
+                cout << "Leer (L/l) o Escribir (W/w) en pagina?: ";
+                cin >> accionEnPagina;
+                if (accionEnPagina == 'L' || accionEnPagina == 'l') {
+                    bufferManagerPrincipal.bufferPool.mostrarFramePagina(numFrame);//leer
+                    //accionValida = true;
+                    break;
+                }
+                else if (accionEnPagina == 'W' || accionEnPagina == 'w') {
+                    bufferManagerPrincipal.bufferPool.lecturaOescrituraPagina(numPagina); //escribir
+                    //accionValida = true;
+                    break;
+                }
+                break;
+                
+            case 5:
+                cout<<"Ingrese el numero de la pagina a liberar (descontar PinCount)"<<endl;
+                cin>>numPagina;
+                bufferManagerPrincipal.pageTable.descontarPinCountApagina(numPagina);
+                break;
+            default:
+                break;
+        }  
 
-        case 3:
-            bufferManagerPrincipal.mostrarPageTAble();
-            break;
-        case 4:
-            cout<<"Ingrese el numero de la pagina a mostrale"<<endl;
-            cin>>numPagina;
-            numFrame=bufferManagerPrincipal.pageTable.getNumFrameDeUnaPagina(numPagina);
-            bufferManagerPrincipal.bufferPool.mostrarFramePagina(numFrame);
-            break;
-        case 5:
-            cout<<"Ingrese el numero de la pagina a liberar (descontar PinCount)"<<endl;
-            cin>>numPagina;
-            bufferManagerPrincipal.pageTable.descontarPinCountApagina(numPagina);
-            break;
-        default:
-            break;
-        }
-        
     }
     
 }
