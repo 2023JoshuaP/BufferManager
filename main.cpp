@@ -25,6 +25,7 @@ void menu()
     BufferManager bufferManagerPrincipal;
     int opcion = 0;
     int numPagina;
+    int numFrame;
     //solicitar 1 página
     while (opcion!=6)
     {
@@ -32,7 +33,6 @@ void menu()
         cout << "1. Crear Buffer Pool" << endl;
         cout << "2. Obtener Una Página" << endl;
         //RELACIONADO CON OPCION 4
-        /*Falta leer correctamente o dirgir correctamente al numero de FrameId en el que se insertara)*/
         /*convertir registros en txt a Registros Fijos (primero) - Variable
         describir función y autor (comentarios)*/
         /*(dentro de obtener página Se preguntará al usuario
@@ -40,9 +40,7 @@ void menu()
         describir función y autor (comentarios)*/
         cout << "3. Mostrar Page Table" << endl;
         cout << "4. Mostrar Una Página" << endl;
-        /*Falta leer correctamente o dirigir correctamente al numero de FrameId en el que se insertara)*/
         cout<<"5. Liberar uso de Página"<<endl;
-        //Se deberá tener una opción para liberar uso de página, para descontar Pin Counts.- describir función y autor (comentarios)
         cout << "6. SALIR del programa principal" << endl;
         cout << ">>>Ingrese el numero de opcion" << endl;
         cin >> opcion;
@@ -57,18 +55,20 @@ void menu()
                 cin >> numPagina;        
                 bufferManagerPrincipal.obtenerUnaPagina(numPagina);
                 break;
-
             case 3:
                 bufferManagerPrincipal.mostrarPageTAble();
                 break;
             case 4:
                 cout << "Ingrese el numero de la pagina a mostrale"<<endl;
                 cin >> numPagina;
+                numFrame=bufferManagerPrincipal.pageTable.getNumFrameDeUnaPagina(numPagina);
+            
+            
                 char accionEnPagina;
                 cout << "Leer (L/l) o Escribir (W/w) en pagina?: ";
                 cin >> accionEnPagina;
                 if (accionEnPagina == 'L' || accionEnPagina == 'l') {
-                    bufferManagerPrincipal.bufferPool.mostrarFramePagina(numPagina);//leer
+                    bufferManagerPrincipal.bufferPool.mostrarFramePagina(numFrame);//leer
                     //accionValida = true;
                     break;
                 }
@@ -77,23 +77,17 @@ void menu()
                     //accionValida = true;
                     break;
                 }
-                //else {
-                    //cout << "Opcion invalida." << endl;
-                //}
-                
-                //bufferManagerPrincipal.bufferPool.mostrarFramePagina(numPagina);//leer
-
-                //bufferManagerPrincipal.bufferPool.lecturaOescrituraPagina(numPagina); //escribir
                 break;
                 
             case 5:
-                cout<<"Ingrese el numero de la pagina a liberar"<<endl;
+                cout<<"Ingrese el numero de la pagina a liberar (descontar PinCount)"<<endl;
                 cin>>numPagina;
-                //funcion
+                bufferManagerPrincipal.pageTable.descontarPinCountApagina(numPagina);
                 break;
             default:
                 break;
         }  
+
     }
     
 }

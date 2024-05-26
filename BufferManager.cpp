@@ -33,14 +33,13 @@ void BufferManager::establecerLimiteDeFrames(int pesoBytesBLoque)
 {
     this->bufferPool.capacidadDeCadaFrame = pesoBytesBLoque;
 
-    for (size_t i = 0; i < this->bufferPool.vectorFramesBufferPool.size(); i++)
+    for (int i = 0; i < this->bufferPool.vectorFramesBufferPool.size(); i++)
     {
         this->bufferPool.vectorFramesBufferPool[i].capacidadBytesDeFrame = pesoBytesBLoque;
     }
     
 }
 
-/* Funcion posible a modificar para modificar Pagina o no (W - L) - Josue */
 void BufferManager::obtenerUnaPagina(int numPagina)
 {
     cout<<"----------------obtenerUnaPagina()-------------------"<<endl;
@@ -51,16 +50,16 @@ void BufferManager::obtenerUnaPagina(int numPagina)
         cout<<">>>>>>>> eliminarPageSinEscrituraEnDisco"<<endl;
         cout << "Datos cambiados segun LRU en Page Table" << endl;
         this->pageTable.mostrarPageTableLRU();
-        this->pageTable.descontarPinCountApagina(numPagina);
 
 
         cout << "Aplicando cambios en Buffer Pool segun Page Table" << endl;
         cout << "Mandando a agregar la nueva Pagina" << endl;
+        int numFrameDePagina = this->pageTable.getNumFrameDeUnaPagina(numPagina);
 
-        // int numFrameDePagina = this->pageTable.getNumFrameDeUnaPagina(numPagina);
-
-        // this->bufferPool.agregarNuevaPaginaBufferPool(numFrameDePagina,numPagina);
-        // this->bufferPool.mostrarFramePagina(numPagina);
+        cout<<"Ingresando Página al BufferPoll dentro vector de Frames...."<<endl;
+        this->bufferPool.agregarNuevaPaginaBufferPool(numFrameDePagina,numPagina);
+        this->bufferPool.mostrarFramePagina(numFrameDePagina);
+        /*Falta hacer esto:*/
     }
     else if(resultadosParaEliminacionYCambios=="eliminarPageConEscrituraEnDisco")
     {
@@ -68,13 +67,19 @@ void BufferManager::obtenerUnaPagina(int numPagina)
         cout<<">>>>>>>> eliminarPageConEscrituraEnDisco"<<endl;
         cout << "Datos cambiados segun LRU en Page Table" << endl;
         this->pageTable.mostrarPageTableLRU();
-        this->pageTable.descontarPinCountApagina(numPagina);
+
+        cout << "Aplicando cambios en Buffer Pool segun Page Table" << endl;
+        cout << "Mandando a agregar la nueva Pagina" << endl;
+        int numFrameDePagina = this->pageTable.getNumFrameDeUnaPagina(numPagina);
+
+        cout<<"Ingresando Página al BufferPoll dentro vector de Frames...."<<endl;
+        //this->bufferPool.agregarNuevaPaginaBufferPool(numFrameDePagina,numPagina);
+        //this->bufferPool.mostrarFramePagina(numFrameDePagina);
     }
     else//Aun hay espacios en el frame
     {
         cout<<">>>>>>>> normal NO hay eliminacion"<<endl;
         this->pageTable.mostrarPageTableLRU();
-        //this->pageTable.descontarPinCountApagina(numPagina);
 
         cout << "Aplicando cambios en Buffer Pool segun Page Table" << endl;
         cout << "Mandando a agregar la nueva Pagina" << endl;
@@ -83,92 +88,11 @@ void BufferManager::obtenerUnaPagina(int numPagina)
 
         cout<<"Ingresando Página al BufferPoll dentro vector de Frames...."<<endl;
         this->bufferPool.agregarNuevaPaginaBufferPool(numFrameDePagina,numPagina);
-        this->bufferPool.mostrarFramePagina(numPagina);
-    }
-    /*
-    char accionEnPagina;
-    bool accionValida = false;
-    while (!accionValida) {
-        cout << "Leer (L/l) o Escribir (W/w) en la pagina?" << endl;
-        cin >> accionEnPagina;
-
-        if (accionEnPagina == 'L' || accionEnPagina == 'l') {
-            cout << "Lectura de Pagina" << endl;
-            this->pageTable.aumentarPinCountDePagina(numPagina);
-            accionValida = true;
-        }
-        else if (accionEnPagina == 'W' || accionEnPagina == 'w') {
-            cout << "Escritura de Pagina" << endl;
-            this->pagina.leerOescribirEnPagina(50);
-            this->pageTable.cambiarDirtyBitDePagina(numPagina);
-            accionValida = true;
-        }
-        else {
-            cout << "No valido" << endl;
-        }
-    }
-    cout << "Pin Count de la pagina " << numPagina << " incrementado" << endl;
-    */
-}
-
-/*
-
-void BufferManager::obtenerUnaPagina(int numPagina)
-{
-    cout<<".-----------------------obtenerUnaPagina() ----------------------"<<endl;
-    cout << "----------- Revisando Page Table para insertado de Pagina" << endl;
-    if (this->pageTable.columnPageIdSize == 0)
-    {
-        cout<<"No tiene  ninguna página insertada"<<endl;
-        cout<<"---- Insertando Datos de pagina a ser insertada en Page table..."<<endl;
-        for (int i = 0; i < this->pageTable.numColumnasEnPageTable; i++)
-        {
-            if (i==0)
-            {
-                this->pageTable.matrizPageTableLRU[0][i]=numPagina;
-                cout<<"frame id:0 - Page id establecida: "<<numPagina<<endl;
-            }
-            else if (i==2)
-            {
-                this->pageTable.matrizPageTableLRU[0][i]=1;
-                cout<<"frame id:0 - Pin Count establecida: "<<numPagina<<endl;
-            }
-            else if (i==3)
-            {
-                this->pageTable.matrizPageTableLRU[0][i]=this->pageTable.matrizPageTableLRU[0][i]+1;
-                cout<<"frame id:0 - Last Used establecida: "<<numPagina<<endl;
-            }
-            
-            else
-            {
-                this->pageTable.matrizPageTableLRU[0][i]=0;
-                cout<<"frame id:0 - Dirty Bit establecida: "<<0<<endl;
-                cout<<"frame id:0 - Last used establecida: "<<0<<endl;
-            }
-            
-            
-        }
-        cout<<"Datos de Page Table actualizado"<<endl;
-
-        cout<<"$$ Primera Pagina, Segun Page Table insertando Pagina A Frame 0"<<endl;
-        this->bufferPool.vectorFramesBufferPool[0].paginaEnFrame.recogerRegistros(numPagina);
-        
-        cout<<"Mostrando Page Table..."<<endl;
-        this->pageTable.mostrarPageTableLRU();
-
-        cout<<"Aumenta tamaño de pageTable.columnPageIdSize"<<endl;
-        this->pageTable.columnPageIdSize++;
-    }
-    else
-    {
-        cout<<"SI tiene páginas insertada"<<endl;
-        //this->pageTable.
-        
+        this->bufferPool.mostrarFramePagina(numFrameDePagina);
     }
     
 }
 
-*/
 void BufferManager::mostrarUnaPagina(int numPagina)
 {
     cout<<"----------------------- mostrarUnaPagina -------------------------"<<endl;
