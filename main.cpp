@@ -41,7 +41,6 @@ void menu()
         cout << "3. Mostrar Page Table" << endl;
         cout << "4. Mostrar Una Página" << endl;
         cout<<"5. Liberar uso de Página"<<endl;
-        //Se deberá tener una opción para liberar uso de página, para descontar Pin Counts.- describir función y autor (comentarios)
         cout << "6. SALIR del programa principal" << endl;
         cout << ">>>Ingrese el numero de opcion" << endl;
         cin >> opcion;
@@ -67,9 +66,9 @@ void menu()
             bufferManagerPrincipal.bufferPool.mostrarFramePagina(numFrame);
             break;
         case 5:
-            cout<<"Ingrese el numero de la pagina a liberar"<<endl;
+            cout<<"Ingrese el numero de la pagina a liberar (descontar PinCount)"<<endl;
             cin>>numPagina;
-            //funcion
+            bufferManagerPrincipal.pageTable.descontarPinCountApagina(numPagina);
             break;
         default:
             break;
