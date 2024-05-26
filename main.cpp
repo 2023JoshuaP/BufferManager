@@ -70,6 +70,7 @@ void menu()
             cout<<"Ingrese el numero de la pagina a liberar"<<endl;
             cin>>numPagina;
             //funcion
+            bufferManagerPrincipal.dejarDeUsarUnaPagina(numPagina);
             break;
         default:
             break;
