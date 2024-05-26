@@ -92,6 +92,7 @@ void PageTable::descontarPinCountApagina(int numPagina)
         int numColumnaPinCount = 2; // 0,1,2,3
 
         this->matrizPageTableLRU[numFilaElegida][numColumnaPinCount] = this->matrizPageTableLRU[numFilaElegida][numColumnaPinCount] - 1;
+        cout<<"Descuento aplicado a Pin Count de página: "<<numPagina<<endl;
     }
 }
 void PageTable::aumentarPinCountDePagina(int numPagina)
@@ -294,6 +295,7 @@ void PageTable::aplicarLRU(int numPagina, int numFrameAignorar, bool &eliminarPa
             cout<<" Solo se eliminará la PAGINA, sin escribir en Disco"<<endl;
             actualizarInformacionDePaginaEliminada(numPagDelMayorLastUsed,numPagina);
             eliminarPageSinEscrituraEnDisco = true;
+            eliminarPageConEscrituraEnDisco = false;
         }
         else
         {
@@ -301,16 +303,14 @@ void PageTable::aplicarLRU(int numPagina, int numFrameAignorar, bool &eliminarPa
             cout << " Se eliminará la PAGINA, PERO SE ESCRIBIRÁ CAMBIOS EN DISCO" << endl;
             actualizarInformacionDePaginaEliminada(numPagDelMayorLastUsed,numPagina);
             eliminarPageConEscrituraEnDisco = true;
+            eliminarPageSinEscrituraEnDisco = false;
         }  
         
     }
     else
     {
-        bool eliminarPageSinEscrituraEnDisco = false;
-        bool eliminarPageConEscrituraEnDisco = false;
-
         cout << "Que MAL, pin count NO LIBRE" << endl;
-        aplicarLRU(numPagDelMayorLastUsed, numFrameDelMayorLastUsed, eliminarPageSinEscrituraEnDisco, eliminarPageConEscrituraEnDisco);
+        aplicarLRU(numPagina, numFrameDelMayorLastUsed, eliminarPageSinEscrituraEnDisco, eliminarPageConEscrituraEnDisco);
     }
     
 }
@@ -335,12 +335,12 @@ string PageTable::analizarPageTableParaAgregarPagina(int numPagina)
         {
             cout<<"Frames llenos"<<endl;
             aplicarLRU(numPagina,INT16_MAX, eliminarPageSinEscrituraEnDisco, eliminarPageConEscrituraEnDisco);
-            if (eliminarPageSinEscrituraEnDisco==true)
+            if (eliminarPageSinEscrituraEnDisco==true && eliminarPageConEscrituraEnDisco==false)
             {
                 string primerBool="eliminarPageSinEscrituraEnDisco";
                 return primerBool;
             }
-            else if(eliminarPageConEscrituraEnDisco==true)
+            else if(eliminarPageConEscrituraEnDisco==true && eliminarPageSinEscrituraEnDisco==false)
             {
                 string segundoBool="eliminarPageConEscrituraEnDisco";
                 return segundoBool;
@@ -390,18 +390,18 @@ bool PageTable::verificarFrameLlenos()
 }
 
 
-void PageTable::actualizarInformacionDePaginaEliminada(int numPaginaActualizar, int nuevaPaginaActualizar)
+void PageTable::actualizarInformacionDePaginaEliminada(int numPaginaEliminar, int nuevaPaginaIngresar)
 {
     cout << "-------------------actualizarInformacionDePaginaEliminada()-----------.------" << endl;
     int numFilaElegida;
-    if (this->verificarExistenciaDePagina(numPaginaActualizar) == true)
+    if (this->verificarExistenciaDePagina(numPaginaEliminar) == true)
     {
         int j = 0;
         for (int i = 0; i < this->columnaFrameIdSize; i++)
         {
-            if (this->matrizPageTableLRU[i][j] == numPaginaActualizar)
+            if (this->matrizPageTableLRU[i][j] == numPaginaEliminar)
             {
-                cout<<"&&&&&&& numPaginaActualizar: "<<numPaginaActualizar<<endl;
+                cout<<"&&&&&&& numPaginaEliminar: "<<numPaginaEliminar<<endl;
                 numFilaElegida = i;
             }
         }
@@ -422,8 +422,8 @@ void PageTable::actualizarInformacionDePaginaEliminada(int numPaginaActualizar, 
     {
         if (j == 0)
         {
-            this->matrizPageTableLRU[numFilaElegida][j] = nuevaPaginaActualizar;
-            cout << "frame id: " << numFilaElegida << " - Page id establecida: " << nuevaPaginaActualizar << endl;
+            this->matrizPageTableLRU[numFilaElegida][j] = nuevaPaginaIngresar;
+            cout << "frame id: " << numFilaElegida << " - Page id establecida: " << nuevaPaginaIngresar << endl;
         }
         else if (j == 1)
         {
@@ -433,15 +433,15 @@ void PageTable::actualizarInformacionDePaginaEliminada(int numPaginaActualizar, 
         }
         else if (j == 2)
         {
-            this->aumentarPinCountDePagina(nuevaPaginaActualizar);
-            cout << "frame id: " << numFilaElegida << " - Pin Count establecida: " << nuevaPaginaActualizar << endl;
+            this->aumentarPinCountDePagina(nuevaPaginaIngresar);
+            cout << "frame id: " << numFilaElegida << " - Pin Count establecida: " << nuevaPaginaIngresar << endl;
         }
         else if (j == 3)
         {
-            this->renovarLastUsedDePagina(nuevaPaginaActualizar);
+            this->renovarLastUsedDePagina(nuevaPaginaIngresar);
             cout << "frame id: " << numFilaElegida << " - Aumento dado en LastUsed" << endl;
             cout << "Agregando +1 a Last Used de todos los demás Pages" << endl;
-            int numFilaElegida = this->getNumFrameDeUnaPagina(nuevaPaginaActualizar);
+            int numFilaElegida = this->getNumFrameDeUnaPagina(nuevaPaginaIngresar);
             this->aumentarLastUsedDeTodasLasDemasPaginas(numFilaElegida);
         }
     }

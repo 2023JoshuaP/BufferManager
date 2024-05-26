@@ -51,16 +51,16 @@ void BufferManager::obtenerUnaPagina(int numPagina)
         cout<<">>>>>>>> eliminarPageSinEscrituraEnDisco"<<endl;
         cout << "Datos cambiados segun LRU en Page Table" << endl;
         this->pageTable.mostrarPageTableLRU();
-        this->pageTable.descontarPinCountApagina(numPagina);
 
 
         cout << "Aplicando cambios en Buffer Pool segun Page Table" << endl;
         cout << "Mandando a agregar la nueva Pagina" << endl;
+        int numFrameDePagina = this->pageTable.getNumFrameDeUnaPagina(numPagina);
 
-        // int numFrameDePagina = this->pageTable.getNumFrameDeUnaPagina(numPagina);
-
-        // this->bufferPool.agregarNuevaPaginaBufferPool(numFrameDePagina,numPagina);
-        // this->bufferPool.mostrarFramePagina(numPagina);
+        cout<<"Ingresando Página al BufferPoll dentro vector de Frames...."<<endl;
+        this->bufferPool.agregarNuevaPaginaBufferPool(numFrameDePagina,numPagina);
+        this->bufferPool.mostrarFramePagina(numFrameDePagina);
+        /*Falta hacer esto:*/
     }
     else if(resultadosParaEliminacionYCambios=="eliminarPageConEscrituraEnDisco")
     {
@@ -68,13 +68,19 @@ void BufferManager::obtenerUnaPagina(int numPagina)
         cout<<">>>>>>>> eliminarPageConEscrituraEnDisco"<<endl;
         cout << "Datos cambiados segun LRU en Page Table" << endl;
         this->pageTable.mostrarPageTableLRU();
-        this->pageTable.descontarPinCountApagina(numPagina);
+
+        cout << "Aplicando cambios en Buffer Pool segun Page Table" << endl;
+        cout << "Mandando a agregar la nueva Pagina" << endl;
+        int numFrameDePagina = this->pageTable.getNumFrameDeUnaPagina(numPagina);
+
+        cout<<"Ingresando Página al BufferPoll dentro vector de Frames...."<<endl;
+        //this->bufferPool.agregarNuevaPaginaBufferPool(numFrameDePagina,numPagina);
+        //this->bufferPool.mostrarFramePagina(numFrameDePagina);
     }
     else//Aun hay espacios en el frame
     {
         cout<<">>>>>>>> normal NO hay eliminacion"<<endl;
         this->pageTable.mostrarPageTableLRU();
-        //this->pageTable.descontarPinCountApagina(numPagina);
 
         cout << "Aplicando cambios en Buffer Pool segun Page Table" << endl;
         cout << "Mandando a agregar la nueva Pagina" << endl;
