@@ -15,7 +15,7 @@ bool isNumber(const std::string &s)
     return true;
 }
 
-/* Funcion modificada por Piero*/
+/* Funcion modificada por Piero y Josue*/
 void Pagina::recogerRegistros(int numPagina)
 {
     string numPaginaString = to_string(numPagina);

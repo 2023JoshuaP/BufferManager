@@ -87,6 +87,27 @@ void BufferManager::obtenerUnaPagina(int numPagina)
 
     }
 
+    char accionEnPagina;
+    bool accionValida = false;
+    while (!accionValida) {
+        cout << "Desea Leer (L o l) o Escribir (W o w) en la pagina?: ";
+        cin >> accionEnPagina;
+
+        if (accionEnPagina == 'L' || accionEnPagina == 'l') {
+            cout << "Leyendo la pagina." << endl;
+            break;
+        }
+        else if (accionEnPagina == 'W' || accionEnPagina == 'w') {
+            cout << "Escribiendo en la pagina" << endl;
+            this->pageTable.cambiarDirtyBitDePagina(numPagina);
+            break;
+        }
+        else {
+            cout << "Accion no valida. Intenta de nuevo" << endl;
+        }
+    }
+    //this->pageTable.aumentarPinCountDePagina(numPagina);
+    cout << "Pin count de la pagina " << numPagina << " incrementado." << endl;
 }
 
 /*
