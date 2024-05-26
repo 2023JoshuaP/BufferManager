@@ -49,33 +49,51 @@ void menu()
 
         switch (opcion)
         {
-        case 1:
-            menuBufferManager(bufferManagerPrincipal);
-            break;
-        case 2:       
-            cout << "Ingrese el numero de pagina que desea OBTENER (Modo Prueba 1 - 6): "<< endl;
-            cin >> numPagina;        
-            bufferManagerPrincipal.obtenerUnaPagina(numPagina);
-            break;
+            case 1:
+                menuBufferManager(bufferManagerPrincipal);
+                break;
+            case 2:       
+                cout << "Ingrese el numero de pagina que desea OBTENER (Modo Prueba 1 - 6): "<< endl;
+                cin >> numPagina;        
+                bufferManagerPrincipal.obtenerUnaPagina(numPagina);
+                break;
 
-        case 3:
-            bufferManagerPrincipal.mostrarPageTAble();
-            break;
-        case 4:
-            cout<<"Ingrese el numero de la pagina a mostrale"<<endl;
-            cin>>numPagina;
-            bufferManagerPrincipal.bufferPool.mostrarFramePagina(numPagina);
-            break;
-        case 5:
-            cout<<"Ingrese el numero de la pagina a liberar"<<endl;
-            cin>>numPagina;
-            //funcion
-            bufferManagerPrincipal.dejarDeUsarUnaPagina(numPagina);
-            break;
-        default:
-            break;
-        }
-        
+            case 3:
+                bufferManagerPrincipal.mostrarPageTAble();
+                break;
+            case 4:
+                cout << "Ingrese el numero de la pagina a mostrale"<<endl;
+                cin >> numPagina;
+                char accionEnPagina;
+                cout << "Leer (L/l) o Escribir (W/w) en pagina?: ";
+                cin >> accionEnPagina;
+                if (accionEnPagina == 'L' || accionEnPagina == 'l') {
+                    bufferManagerPrincipal.bufferPool.mostrarFramePagina(numPagina);//leer
+                    //accionValida = true;
+                    break;
+                }
+                else if (accionEnPagina == 'W' || accionEnPagina == 'w') {
+                    bufferManagerPrincipal.bufferPool.lecturaOescrituraPagina(numPagina); //escribir
+                    //accionValida = true;
+                    break;
+                }
+                //else {
+                    //cout << "Opcion invalida." << endl;
+                //}
+                
+                //bufferManagerPrincipal.bufferPool.mostrarFramePagina(numPagina);//leer
+
+                //bufferManagerPrincipal.bufferPool.lecturaOescrituraPagina(numPagina); //escribir
+                break;
+                
+            case 5:
+                cout<<"Ingrese el numero de la pagina a liberar"<<endl;
+                cin>>numPagina;
+                //funcion
+                break;
+            default:
+                break;
+        }  
     }
     
 }

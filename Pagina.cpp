@@ -4,6 +4,7 @@ Pagina::Pagina(/* args */){}
 
 Pagina::~Pagina(){}
 
+int tamanioString = 0;
 /* Funcion hecha por Josue*/
 bool isNumber(const std::string &s)
 {
@@ -15,7 +16,7 @@ bool isNumber(const std::string &s)
     return true;
 }
 
-/* Funcion modificada por Piero y Josue*/
+/* Funcion modificada por Piero*/
 void Pagina::recogerRegistros(int numPagina)
 {
     string numPaginaString = to_string(numPagina);
@@ -39,8 +40,8 @@ void Pagina::recogerRegistros(int numPagina)
         this->vectorRegistrosEnPagina.clear();
 
         cout << "tamanio string: " << endl;
-        int tamanio;
-        cin >> tamanio;
+
+        cin >> tamanioString;
         //string linea_registro = " ";
         while (getline(fileReadBloques,lineaDeRegistroAux))
         {
@@ -62,7 +63,7 @@ void Pagina::recogerRegistros(int numPagina)
                     continue;
                 }
                 else {
-                    while (peso < tamanio) {
+                    while (peso < tamanioString) {
                         valor += ' ';
                         peso += 1;
                     }
@@ -71,13 +72,13 @@ void Pagina::recogerRegistros(int numPagina)
             }
             this->vectorRegistrosEnPagina.push_back(linea_registro);
         }
-        cout<<"Recogida de datos terminado"<<endl;
+        cout << "Recogida de datos terminado" << endl;
         
     }
     
 }
 
-void Pagina::mostrarContenidoDePagina()
+void Pagina::mostrarContenidoDePagina()//funcion Piero
 {
     cout << "-------------------PAgina: mostrarContenidoDePagina()-------------------" << endl;
     for (size_t i =0 ; i < this->vectorRegistrosEnPagina.size(); i++) {
@@ -87,6 +88,64 @@ void Pagina::mostrarContenidoDePagina()
     
 }
 
+void Pagina::leerOescribirEnPagina()  //Funcion Piero
+{
+    int filaAencontrar;
+    string registroNuevo;
+    string cadenaFinal = "";
+    cout << "-------------------PAgina: leerOescribirEnPagina()----------------------" << endl;
+    cout << "Fila a editar: ";
+    cin >> filaAencontrar;
+    cin.ignore();
+
+    string& registro = this->vectorRegistrosEnPagina[filaAencontrar];
+    cout << "Registro actual: " << registro << endl;
+
+    vector<string> valoresRegistroNuevo;
+    stringstream ss(registro);
+    string valor;
+
+    cout << "Registro nuevo: ";
+
+    getline(cin, registroNuevo);
+
+    stringstream ssNuevo(registroNuevo);
+
+    while (getline(ssNuevo, valor, ',')) {
+        valoresRegistroNuevo.push_back(valor);
+    }
+
+    for (int i = 0; i < valoresRegistroNuevo.size();++i)
+    {
+        if (isNumber(valoresRegistroNuevo[i]) == true)
+        {
+            cadenaFinal += valoresRegistroNuevo[i] + ',';
+        }
+        
+        if (isNumber(valoresRegistroNuevo[i]) == false)
+        {
+            cadenaFinal += valoresRegistroNuevo[i];
+            int pesoValor = valoresRegistroNuevo[i].size();
+            
+            do {
+                cadenaFinal += " ";
+                pesoValor += 1;
+            }
+            while (pesoValor < tamanioString);
+            
+            if (i < valoresRegistroNuevo.size() - 1)
+            {
+                cadenaFinal += ',';
+            }
+            
+        }
+
+    }
+    this->vectorRegistrosEnPagina[filaAencontrar] = cadenaFinal;
+    cout << "Guardado" << endl;
+    cout << "------------------------------------------------------------------------" << endl;
+    
+}
 
 bool Pagina::verificarPaginaVacia()
 {

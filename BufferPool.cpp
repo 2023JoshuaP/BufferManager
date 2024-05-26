@@ -20,3 +20,10 @@ void BufferPool::mostrarFramePagina(int numPagina)
     /*FALTA CORREGIR: error de lectura de pagina en vector FRAMES ()*/ //corregido 
     this->vectorFramesBufferPool[numPagina-1].paginaEnFrame.mostrarContenidoDePagina();
 }
+
+void BufferPool::lecturaOescrituraPagina(int numPagina)
+{
+    cout<<"-------------------------lecturaOescrituraPagina()----------------------"<<endl;
+    this->vectorFramesBufferPool[numPagina-1].paginaEnFrame.leerOescribirEnPagina();
+    
+}

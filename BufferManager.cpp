@@ -84,30 +84,31 @@ void BufferManager::obtenerUnaPagina(int numPagina)
         cout<<"Ingresando Página al BufferPoll dentro vector de Frames...."<<endl;
         this->bufferPool.agregarNuevaPaginaBufferPool(numFrameDePagina,numPagina);
         this->bufferPool.mostrarFramePagina(numPagina);
-
     }
-
+    /*
     char accionEnPagina;
     bool accionValida = false;
     while (!accionValida) {
-        cout << "Desea Leer (L o l) o Escribir (W o w) en la pagina?: ";
+        cout << "Leer (L/l) o Escribir (W/w) en la pagina?" << endl;
         cin >> accionEnPagina;
 
         if (accionEnPagina == 'L' || accionEnPagina == 'l') {
-            cout << "Leyendo la pagina." << endl;
-            break;
+            cout << "Lectura de Pagina" << endl;
+            this->pageTable.aumentarPinCountDePagina(numPagina);
+            accionValida = true;
         }
         else if (accionEnPagina == 'W' || accionEnPagina == 'w') {
-            cout << "Escribiendo en la pagina" << endl;
+            cout << "Escritura de Pagina" << endl;
+            this->pagina.leerOescribirEnPagina(50);
             this->pageTable.cambiarDirtyBitDePagina(numPagina);
-            break;
+            accionValida = true;
         }
         else {
-            cout << "Accion no valida. Intenta de nuevo" << endl;
+            cout << "No valido" << endl;
         }
     }
-    //this->pageTable.aumentarPinCountDePagina(numPagina);
-    cout << "Pin count de la pagina " << numPagina << " incrementado." << endl;
+    cout << "Pin Count de la pagina " << numPagina << " incrementado" << endl;
+    */
 }
 
 /*
@@ -198,37 +199,5 @@ void BufferManager::mostrarPageTAble()
 
 void BufferManager::dejarDeUsarUnaPagina(int numPagina)
 {
-    //this->pageTable.descontarPinCountApagina(numPagina);
-    cout << "----------------dejarDeUsarUnaPagina()-------------------" << endl;
-    if (this->pageTable.verificarExistenciaDePagina(numPagina)) {
-        this->pageTable.descontarPinCountApagina(numPagina);
-
-        int numFilaElegida = -1;
-
-        /* Localizar la fila de la pagina en la tabla */
-        for (int i = 0; i < this->pageTable.columnaFrameIdSize; i++) {
-            if (this->pageTable.matrizPageTableLRU[i][0] == numPagina) {
-                numFilaElegida = i;
-                break;
-            }
-        }
-
-        /* Verificar si se encontro la pagina en la tabla */
-        if (numFilaElegida != -1) {
-            int numColumnaPinCount = 2;
-            int numColumnaDirtyBit = 1;
-
-            if (this->pageTable.matrizPageTableLRU[numFilaElegida][numColumnaPinCount] == 0 &&
-                this->pageTable.matrizPageTableLRU[numFilaElegida][numColumnaDirtyBit] == 1) {
-                    cout << "Pin Count es 0 y Dirty Bit es 1, escribiendo página en Disco" << endl;
-                    this->pageTable.cambiarDirtyBitDePagina(numPagina);
-            }
-        }
-        else {
-            cout << "Pagina no encontrada en la tabla de paginas." << endl;
-        }
-    }
-    else {
-        cout << "La pagina no existe en el Buffer" << endl;
-    }
+    this->pageTable.descontarPinCountApagina(numPagina);
 }

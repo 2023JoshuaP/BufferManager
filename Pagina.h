@@ -19,6 +19,7 @@ public:
     void recogerRegistros(int numPagina);
     void mostrarContenidoDePagina();
     bool verificarPaginaVacia();
+    void leerOescribirEnPagina();
 };
 
 #endif
