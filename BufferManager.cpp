@@ -229,6 +229,6 @@ void BufferManager::dejarDeUsarUnaPagina(int numPagina)
         }
     }
     else {
-        cout << "LA pagina no existe en el Buffer" << endl;
+        cout << "La pagina no existe en el Buffer" << endl;
     }
 }
