@@ -43,8 +43,17 @@ void BufferManager::establecerLimiteDeFrames(int pesoBytesBLoque)
 void BufferManager::obtenerUnaPagina(int numPagina)
 {
     cout<<"----------------obtenerUnaPagina()-------------------"<<endl;
+    
     string resultadosParaEliminacionYCambios=this->pageTable.analizarPageTableParaAgregarPagina(numPagina);
-    if (resultadosParaEliminacionYCambios=="eliminarPageSinEscrituraEnDisco")
+    cout<<"::::::::::::::::::::::::::DAME RESULTADOOOOO::::::"<<resultadosParaEliminacionYCambios<<endl;
+    istringstream iss(resultadosParaEliminacionYCambios);
+    string resultado;
+    string paginaEliminada;
+    getline(iss,resultado,',');
+    getline(iss,paginaEliminada,',');
+    int numPaginaEliminada=stoi(paginaEliminada);
+
+    if (resultado=="eliminarPageSinEscrituraEnDisco")
     {
         //eliminarPageSinEscrituraEnDisco
         cout<<">>>>>>>> eliminarPageSinEscrituraEnDisco"<<endl;
@@ -61,7 +70,7 @@ void BufferManager::obtenerUnaPagina(int numPagina)
         this->bufferPool.mostrarFramePagina(numFrameDePagina);
         /*Falta hacer esto:*/
     }
-    else if(resultadosParaEliminacionYCambios=="eliminarPageConEscrituraEnDisco")
+    else if(resultado=="eliminarPageConEscrituraEnDisco")
     {
         //eliminarPageConEscrituraEnDisco
         cout<<">>>>>>>> eliminarPageConEscrituraEnDisco"<<endl;
@@ -72,7 +81,14 @@ void BufferManager::obtenerUnaPagina(int numPagina)
         cout << "Mandando a agregar la nueva Pagina" << endl;
         int numFrameDePagina = this->pageTable.getNumFrameDeUnaPagina(numPagina);
 
+        int numFrameDePaginaEliminada = this->pageTable.getNumFrameDeUnaPagina(numPagina);
+        int numPaginaEliminada=stoi(paginaEliminada);
+        
+
         cout<<"Ingresando Página al BufferPoll dentro vector de Frames...."<<endl;
+        this->bufferPool.agregarContenidoPaginaAbloque(numFrameDePaginaEliminada, numPaginaEliminada);
+        this->bufferPool.agregarNuevaPaginaBufferPool(numFrameDePagina,numPagina);
+        this->bufferPool.mostrarFramePagina(numFrameDePagina);
         //this->bufferPool.agregarNuevaPaginaBufferPool(numFrameDePagina,numPagina);
         //this->bufferPool.mostrarFramePagina(numFrameDePagina);
     }

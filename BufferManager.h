@@ -5,6 +5,9 @@
 #include "./PageTable.cpp"
 
 #include <vector>
+#include <sstream>
+#include <string>
+#include <string.h>
 
 using namespace std;
 
@@ -22,7 +25,6 @@ class BufferManager
         void obtenerUnaPagina(int numPagina);
         void mostrarUnaPagina(int numPagina);
         void mostrarPageTAble();
-
         void dejarDeUsarUnaPagina(int numPagina);
 
 

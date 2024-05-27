@@ -8,7 +8,6 @@ void BufferPool::agregarNuevaPaginaBufferPool(int numFrame, int numPagina)
 {
     cout<<"-----------------agregarNuevaPaginaBufferPool() -----------------"<<endl;
 
-    /*FALTA CORREGIR: error de insertado de pagina en vector FRAMES*/
     if (this->vectorFramesBufferPool[numFrame].paginaEnFrame.vectorRegistrosEnPagina.empty())
     {
         this->vectorFramesBufferPool[numFrame].leerDatosEnPaginaDeFrame(numPagina);
@@ -27,8 +26,13 @@ void BufferPool::mostrarFramePagina(int numFrame)
     this->vectorFramesBufferPool[numFrame].paginaEnFrame.mostrarContenidoDePagina();
 }
 
-void BufferPool::lecturaOescrituraPagina(int numPagina)
+void BufferPool::lecturaOescrituraPagina(int numFrame)
 {
     cout<<"-------------------------lecturaOescrituraPagina()----------------------"<<endl;
-    this->vectorFramesBufferPool[numPagina-1].paginaEnFrame.leerOescribirEnPagina();
+    this->vectorFramesBufferPool[numFrame].paginaEnFrame.leerOescribirEnPagina();
+}
+
+void BufferPool::agregarContenidoPaginaAbloque(int numFrame, int numPaginaEliminada)
+{
+    this->vectorFramesBufferPool[numFrame].paginaEnFrame.agregarContenido(numPaginaEliminada);
 }

@@ -40,7 +40,7 @@ void menu()
         describir función y autor (comentarios)*/
         cout << "3. Mostrar Page Table" << endl;
         cout << "4. Mostrar Una Página" << endl;
-        cout<<"5. Liberar uso de Página"<<endl;
+        cout << "5. Liberar uso de Página" << endl;
         cout << "6. SALIR del programa principal" << endl;
         cout << ">>>Ingrese el numero de opcion" << endl;
         cin >> opcion;
@@ -63,18 +63,18 @@ void menu()
                 cin >> numPagina;
                 numFrame=bufferManagerPrincipal.pageTable.getNumFrameDeUnaPagina(numPagina);
             
-            
                 char accionEnPagina;
                 cout << "Leer (L/l) o Escribir (W/w) en pagina?: ";
                 cin >> accionEnPagina;
                 if (accionEnPagina == 'L' || accionEnPagina == 'l') {
                     bufferManagerPrincipal.bufferPool.mostrarFramePagina(numFrame);//leer
-                    //accionValida = true;
+                    bufferManagerPrincipal.pageTable.aumentarPinCountDePagina(numPagina);
                     break;
                 }
                 else if (accionEnPagina == 'W' || accionEnPagina == 'w') {
-                    bufferManagerPrincipal.bufferPool.lecturaOescrituraPagina(numPagina); //escribir
-                    //accionValida = true;
+                    bufferManagerPrincipal.bufferPool.lecturaOescrituraPagina(numFrame); //escribir
+                    bufferManagerPrincipal.pageTable.aumentarPinCountDePagina(numPagina);
+                    bufferManagerPrincipal.pageTable.cambiarDirtyBitDePagina(numPagina);
                     break;
                 }
                 break;

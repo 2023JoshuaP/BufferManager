@@ -5,6 +5,7 @@ Pagina::Pagina(/* args */){}
 Pagina::~Pagina(){}
 
 int tamanioString = 0;
+string rutaCompleta = "";
 /* Funcion hecha por Josue*/
 bool isNumber(const std::string &s)
 {
@@ -22,7 +23,7 @@ void Pagina::recogerRegistros(int numPagina)
     string numPaginaString = to_string(numPagina);
     string nameBloque = "Bloque";
     /* Por si acaso si no funciona es ../, de caso contrario ./ */
-    string rutaCompleta = "../Bloques/" + nameBloque+numPaginaString + ".txt";
+    rutaCompleta = "./Bloques/" + nameBloque+numPaginaString + ".txt";
     cout << "Intentando abrir el archivo en: " << rutaCompleta << endl;
     ifstream fileReadBloques(rutaCompleta);
 
@@ -143,6 +144,7 @@ void Pagina::leerOescribirEnPagina()  //Funcion Piero
     }
     this->vectorRegistrosEnPagina[filaAencontrar] = cadenaFinal;
     cout << "Guardado" << endl;
+
     cout << "------------------------------------------------------------------------" << endl;
     
 }
@@ -157,5 +159,25 @@ bool Pagina::verificarPaginaVacia()
     {
         return false;
     }    
+}
+
+void Pagina::agregarContenido(int numPaginaEliminada)
+{
+    cout << "-------------------PAgina: agregarContenido()----------------------" << endl;
+    string rutaBloqueEscribir="./Bloques/Bloque"+to_string(numPaginaEliminada)+".txt";
+    ofstream rutaBloque(rutaBloqueEscribir, ios::trunc);
+    if (!rutaBloque.is_open())
+    {
+        cout<<"No abrio correctamente: "<<rutaBloqueEscribir<<endl;
+    }
+    else
+    {
+        for (int_least32_t i = 0; i <= this->vectorRegistrosEnPagina.size(); ++i)
+        {
+            rutaBloque << this->vectorRegistrosEnPagina[i] << endl;
+        }
+        cout << "Contenido de pagina en memoria mandado a bloque correctamente" << endl;
+    }
+    
 }
 
