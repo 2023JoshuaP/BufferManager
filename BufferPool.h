@@ -21,6 +21,7 @@ class BufferPool
         void agregarNuevaPaginaBufferPool(int numFrame, int numPagina);
         void mostrarFramePagina(int numPagina);
         void lecturaOescrituraPagina(int numPagina);
+        void agregarContenidoPaginaAbloque(int numPagina,int numPaginaEliminada);
 };
 
 #endif

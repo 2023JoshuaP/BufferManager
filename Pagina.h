@@ -20,6 +20,7 @@ public:
     void mostrarContenidoDePagina();
     bool verificarPaginaVacia();
     void leerOescribirEnPagina();
+    void agregarContenido(int numPaginaEliminada);
 };
 
 #endif
